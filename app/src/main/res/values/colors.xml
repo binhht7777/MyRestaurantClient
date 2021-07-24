@@ -7,10 +7,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="xanhdam">#0099BC</color>
+    <color name="xanhnhat">#00B7C3</color>
+    <color name="xanh90">#00d2e6</color>
+    <color name="dodam">#ef473a</color>
+    <color name="donhat">#ff7b65</color>
+    <color name="hongdam">#ff0066</color>
+    <color name="hongnhat">#ff3385</color>
 
-    <color name="colorPrimary">#ef473a</color>
+    <color name="colorPrimary">@color/xanhdam</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
-    <color name="colorAccent">#ff7b65</color>
+    <color name="colorAccent">@color/xanhnhat</color>
 
     <color name="button_color">@color/colorPrimary</color>
+    <color name="divider">#F7F5F4</color>
 </resources>

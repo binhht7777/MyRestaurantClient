@@ -4,37 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_screen"
-    tools:context=".MainActivity">
-
+    android:background="@color/white"
+    tools:context=".HomeActivity">
 
     <LinearLayout
         android:id="@+id/layoutTop"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/button_color">
+        android:background="@color/button_color"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@color/colorPrimary"
-            android:fontFamily="@font/parisienne_regular"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="center"
-            android:text="@string/app_name"
+            android:text="Update Information"
             android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -47,9 +48,29 @@
             android:hint="Phone Number">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtPhone"
+                android:id="@+id/edtPhoneNumber"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:fontFamily="@font/roboto_regular"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextField1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:theme="@style/TextInputLayout"
+            android:hint="User Name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,7 +80,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:paddingTop="10dp"
+            android:layout_marginTop="20dp"
+            android:theme="@style/TextInputLayout"
+            android:hint="Address">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtUserAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextField3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
             android:theme="@style/TextInputLayout"
             android:hint="Password">
 
@@ -67,7 +105,8 @@
                 android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:fontFamily="@font/roboto_regular" />
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -75,38 +114,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/btnSignIn"
+            android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+
             android:layout_weight="1"
             android:backgroundTint="@color/colorPrimary"
             android:fontFamily="@font/oswald_medium"
             android:padding="10dp"
-            android:text="Đăng nhập"
+            android:text="Cập nhật"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/btnSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/colorPrimary"
-            android:fontFamily="@font/oswald_medium"
-            android:padding="10dp"
-            android:text="Đăng ký"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
     </LinearLayout>
-
 </RelativeLayout>

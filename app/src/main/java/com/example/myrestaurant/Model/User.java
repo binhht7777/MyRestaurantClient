@@ -1,44 +1,53 @@
 package com.example.myrestaurant.Model;
 
 public class User {
-    private String fbid, userPhone, name, address;
+    private String Fbid, UserPhone, Name, Address, Password;
 
-    public User(String fbid, String userPhone, String name, String address) {
-        this.fbid = fbid;
-        this.userPhone = userPhone;
-        this.name = name;
-        this.address = address;
+    public User(String fbid, String userPhone, String name, String address, String password) {
+        Fbid = fbid;
+        UserPhone = userPhone;
+        Name = name;
+        Address = address;
+        Password = password;
     }
 
     public String getFbid() {
-        return fbid;
+        return Fbid;
     }
 
     public void setFbid(String fbid) {
-        this.fbid = fbid;
+        Fbid = fbid;
     }
 
     public String getUserPhone() {
-        return userPhone;
+        return UserPhone;
     }
 
     public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+        UserPhone = userPhone;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        Name = name;
     }
 
     public String getAddress() {
-        return address;
+        return Address;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        Address = address;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
     }
 }
