@@ -19,6 +19,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
+/*
+fix error Migrate an existing project using Android Studio: them enableJetifier = true
+android.useAndroidX=true
+android.enableJetifier=true
+* */
 public class MainActivity extends AppCompatActivity {
 
     Button btnSignIn, btnSignUp;

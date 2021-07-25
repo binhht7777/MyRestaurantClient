@@ -11,14 +11,14 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<String> mText;
     private MutableLiveData<String> mText1;
 
-    String userName = Common.currentUser.getName();
-    String userPhone= Common.currentUser.getUserPhone();
+//    String userName = Common.currentUser.getName();
+//    String userPhone= Common.currentUser.getUserPhone();
     public HomeViewModel() {
         mText = new MutableLiveData<>();
         mText1 = new MutableLiveData<>();
 //        mText.setValue("This is home fragment");
-        mText.setValue(userName);
-        mText1.setValue(userPhone);
+//        mText.setValue(userName);
+//        mText1.setValue(userPhone);
     }
 
     public LiveData<String> getText() {
