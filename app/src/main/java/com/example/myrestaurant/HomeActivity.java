@@ -164,6 +164,7 @@ public class HomeActivity extends AppCompatActivity {
                 .setNegativeButton("Bỏ qua", ((dialog, i) -> dialog.dismiss()))
                 .setPositiveButton("Đồng ý", ((dialog, i) -> {
                     Common.currentUser = null;
+                    Common.currentRestaurant = null;
                     Intent intent = new Intent(HomeActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
