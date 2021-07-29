@@ -1,6 +1,7 @@
 package com.example.myrestaurant.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myrestaurant.Common.Common;
+import com.example.myrestaurant.EventBus.FoodListEvent;
+import com.example.myrestaurant.FoodListActivity;
 import com.example.myrestaurant.Interface.IOnRecyclerViewClickListener;
 import com.example.myrestaurant.Model.Category;
 import com.example.myrestaurant.R;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -49,7 +53,8 @@ public class MyCategoryAdapter extends RecyclerView.Adapter<MyCategoryAdapter.My
         holder.setListener(new IOnRecyclerViewClickListener() {
             @Override
             public void onCLick(View view, int position) {
-                Toast.makeText(context, "" + categoryList.get(position).getName(), Toast.LENGTH_SHORT).show();
+                EventBus.getDefault().postSticky(new FoodListEvent(true, categoryList.get(position)));
+                context.startActivity(new Intent(context, FoodListActivity.class));
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.myrestaurant.Retrofit;
 
+import com.example.myrestaurant.Model.FoodModel;
 import com.example.myrestaurant.Model.MenuModel;
 import com.example.myrestaurant.Model.RestaurantModel;
 import com.example.myrestaurant.Model.UpdateUserModel;
@@ -25,6 +26,10 @@ public interface IMyRestaurantAPI {
     @GET("menu")
     Observable<MenuModel> getCategory(@Query("key") String apiKey, @Query("restaurantId") int restaurantId);
 
+
+    @GET("food")
+    Observable<FoodModel> getFoodOfMenu(@Query("key") String apiKey,
+                                        @Query("menuId") int menuId);
 
     @POST("user")
     @FormUrlEncoded
