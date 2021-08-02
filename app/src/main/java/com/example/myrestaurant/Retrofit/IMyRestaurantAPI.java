@@ -1,8 +1,10 @@
 package com.example.myrestaurant.Retrofit;
 
+import com.example.myrestaurant.Model.AddonModel;
 import com.example.myrestaurant.Model.FoodModel;
 import com.example.myrestaurant.Model.MenuModel;
 import com.example.myrestaurant.Model.RestaurantModel;
+import com.example.myrestaurant.Model.SizeModel;
 import com.example.myrestaurant.Model.UpdateUserModel;
 import com.example.myrestaurant.Model.UserModel;
 
@@ -31,6 +33,15 @@ public interface IMyRestaurantAPI {
     Observable<FoodModel> getFoodOfMenu(@Query("key") String apiKey,
                                         @Query("menuId") int menuId);
 
+    @GET("size")
+    Observable<SizeModel> getSizeOfFood(@Query("key") String apiKey,
+                                        @Query("foodId") int foodId);
+
+    @GET("addon")
+    Observable<AddonModel> getAddonOfFood(@Query("key") String apiKey,
+                                          @Query("foodId") int foodId);
+
+    // ***** METHOD POST
     @POST("user")
     @FormUrlEncoded
     Observable<UpdateUserModel> updateUserInfo(@Field("key") String apiKey,

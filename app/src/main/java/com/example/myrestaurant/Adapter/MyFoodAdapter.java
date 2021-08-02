@@ -1,7 +1,7 @@
 package com.example.myrestaurant.Adapter;
 
 import android.content.Context;
-import android.text.Html;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +17,14 @@ import com.example.myrestaurant.Database.CartDataSource;
 import com.example.myrestaurant.Database.CartDatabase;
 import com.example.myrestaurant.Database.CartItem;
 import com.example.myrestaurant.Database.LocalCartDataSource;
+import com.example.myrestaurant.EventBus.FoodDetailEvent;
+import com.example.myrestaurant.FoodDetailActivity;
 import com.example.myrestaurant.Interface.IFoodDetailOrCartClickListener;
 import com.example.myrestaurant.Model.Food;
 import com.example.myrestaurant.R;
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -73,7 +75,8 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
         holder.txt_food_name.setText(foodList.get(position).getName());
         holder.setListener((view, position1, isDetail) -> {
             if (isDetail) {
-                Toast.makeText(context, "Detail click", Toast.LENGTH_SHORT).show();
+                context.startActivity(new Intent(context, FoodDetailActivity.class));
+                EventBus.getDefault().postSticky(new FoodDetailEvent(true, foodList.get(position)));
             } else {
                 // cart create
                 CartItem cartItem = new CartItem();
@@ -148,5 +151,6 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
             }
 
         }
+
     }
 }

@@ -61,8 +61,8 @@ public class HomeActivity extends AppCompatActivity {
 
     TextView tvUserName, tvUserPhone;
 
-    @BindView(R.id.banner_slider)
-    Slider banner_slider;
+//    @BindView(R.id.banner_slider)
+//    Slider banner_slider;
 
     @BindView(R.id.recycler_restaurant)
     RecyclerView recycler_restaurant;
@@ -238,6 +238,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void displayBanner(List<Restaurant> restaurantList) {
-        banner_slider.setAdapter(new RestaurantSliderAdapter(restaurantList));
+//        banner_slider.setAdapter(new RestaurantSliderAdapter(restaurantList));
     }
 }

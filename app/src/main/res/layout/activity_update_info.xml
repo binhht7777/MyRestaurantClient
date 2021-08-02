@@ -23,7 +23,7 @@
             android:gravity="center"
             android:text="Update Information"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="@dimen/font_size_20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -130,7 +130,7 @@
             android:text="Cập nhật"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="@dimen/font_size_20" />
 
     </LinearLayout>
 </RelativeLayout>

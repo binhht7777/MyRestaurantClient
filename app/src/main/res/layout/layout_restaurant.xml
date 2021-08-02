@@ -11,7 +11,7 @@
         <ImageView
             android:id="@+id/img_restaurant"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:src="@drawable/app_icon"
             android:scaleType="centerCrop"/>
 
@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:text="Restaurant A"
                 android:textColor="@color/xanhdam"
-                android:textSize="20sp"
+                android:textSize="@dimen/font_size_20"
                 android:fontFamily="@font/roboto_medium"/>
 
             <TextView
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="257 Carianna Cove Trl World"
                 android:textColor="@color/xanhdam"
-                android:textSize="16sp"
+                android:textSize="@dimen/font_size_16"
                 android:fontFamily="@font/roboto_medium"/>
         </LinearLayout>
     </LinearLayout>

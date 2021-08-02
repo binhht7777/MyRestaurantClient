@@ -37,9 +37,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="By your mood or prefersnce"
+            android:text="Menu"
             android:fontFamily="@font/roboto_medium"
-            android:textSize="20sp"
+            android:textSize="@dimen/font_size_20"
             android:textColor="@color/xanhdam"/>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
@@ -66,6 +66,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
+            android:background="@color/xanhdam"
+            app:backgroundTint="@color/xanhdam"
+            app:fabSize="mini"
             android:backgroundTint="@color/xanhdam"
             android:src="@drawable/ic_baseline_shopping_cart_24"
             />
