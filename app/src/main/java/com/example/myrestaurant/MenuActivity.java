@@ -2,13 +2,20 @@ package com.example.myrestaurant;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,6 +28,7 @@ import com.example.myrestaurant.Database.CartDataSource;
 import com.example.myrestaurant.Database.CartDatabase;
 import com.example.myrestaurant.Database.LocalCartDataSource;
 import com.example.myrestaurant.EventBus.MenuItemEvent;
+import com.example.myrestaurant.Model.Category;
 import com.example.myrestaurant.Retrofit.IMyRestaurantAPI;
 import com.example.myrestaurant.Retrofit.RetrofitClient;
 import com.example.myrestaurant.Utils.SpacesItemDecoration;
@@ -67,6 +75,11 @@ public class MenuActivity extends AppCompatActivity {
 
     MyCategoryAdapter adapter;
     CartDataSource cartDataSource;
+
+    // Khai bao 1 recyclerview moi
+    RecyclerView rcvCategoryList;
+    MyCategoryAdapter categoryAdapter;
+    SearchView searchView;
 
 
     @Override
@@ -118,6 +131,10 @@ public class MenuActivity extends AppCompatActivity {
     private void initView() {
         ButterKnife.bind(this);
 
+        // Khai bao 1 recyclerview moi
+        rcvCategoryList = findViewById(R.id.recycler_category);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rcvCategoryList.setLayoutManager(linearLayoutManager);
         btn_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,6 +164,8 @@ public class MenuActivity extends AppCompatActivity {
         });
         recycler_category.setLayoutManager(layoutManager);
         recycler_category.addItemDecoration(new SpacesItemDecoration(8));
+
+
     }
 
     private void init() {
@@ -192,8 +211,14 @@ public class MenuActivity extends AppCompatActivity {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(menuModel -> {
-                                        adapter = new MyCategoryAdapter(MenuActivity.this, menuModel.getResult());
+                                        adapter = new MyCategoryAdapter(MenuActivity.this, menuModel.getResult(), this::selectedCategory);
                                         recycler_category.setAdapter(adapter);
+
+                                        // get adapter category search
+                                        categoryAdapter = new MyCategoryAdapter(MenuActivity.this, menuModel.getResult(), this::selectedCategory);
+                                        rcvCategoryList.setAdapter(categoryAdapter);
+                                        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
+                                        rcvCategoryList.addItemDecoration(itemDecoration);
                                     },
                                     throwable -> {
                                         Toast.makeText(this, "[GET CATEGORY]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
@@ -203,5 +228,38 @@ public class MenuActivity extends AppCompatActivity {
         } else {
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.category_search_menu, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.nav_category_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                categoryAdapter.getFilter().filter(query);
+                recycler_category.setAdapter(categoryAdapter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                categoryAdapter.getFilter().filter(newText);
+                recycler_category.setAdapter(categoryAdapter);
+                return true;
+            }
+        });
+
+        return true;
+    }
+
+    public void selectedCategory(Category categoryModel) {
+        // BinhPT06 - Get  categoryId and send to new activity
+        Intent categoryDetail = new Intent(MenuActivity.this, FoodListActivity.class);
+        categoryDetail.putExtra("FoodId", categoryModel.getId());
+        startActivity(categoryDetail);
     }
 }

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,9 +40,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHolder> {
+public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHolder> implements Filterable {
     Context context;
     List<Food> foodList;
+    List<Food> foodListOld;
+    private MyFoodAdapter.SelectedFood selectedFood;
 
     CompositeDisposable completDisposable;
     CartDataSource cartDataSource;
@@ -50,9 +55,11 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
 
     }
 
-    public MyFoodAdapter(Context context, List<Food> foodList) {
+    public MyFoodAdapter(Context context, List<Food> foodList, SelectedFood selectedFood) {
         this.context = context;
         this.foodList = foodList;
+        this.foodListOld = foodList;
+        this.selectedFood = selectedFood;
         completDisposable = new CompositeDisposable();
         cartDataSource = new LocalCartDataSource(CartDatabase.getInstance(context).cartDAO());
     }
@@ -110,6 +117,40 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
         return foodList.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String strSearch = charSequence.toString();
+                if (strSearch.isEmpty()) {
+                    foodList = foodListOld;
+                } else {
+                    List<Food> list = new ArrayList<>();
+                    for (Food food : foodListOld) {
+                        if (food.getName().toLowerCase().contains(strSearch.toLowerCase())) {
+                            list.add(food);
+                        }
+                    }
+                    foodList = list;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = foodList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                foodList = (List<Food>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public interface SelectedFood{
+        void selectedFood(Food foodModel);
+
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.img_food)
         ImageView img_food;
@@ -149,6 +190,7 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
             } else if (v.getId() == R.id.img_card) {
                 listener.onFoodItemClickListener(v, getAdapterPosition(), false);
             }
+            selectedFood.selectedFood(foodList.get(getAdapterPosition()));
 
         }
 

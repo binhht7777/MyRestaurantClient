@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,20 +25,25 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MyCategoryAdapter extends RecyclerView.Adapter<MyCategoryAdapter.MyViewHolder> {
+public class MyCategoryAdapter extends RecyclerView.Adapter<MyCategoryAdapter.MyViewHolder> implements Filterable {
 
     Context context;
     List<Category> categoryList;
+    List<Category> categoryListOld;
+    private MyCategoryAdapter.SelectedCategory selectedCategory;
 
-    public MyCategoryAdapter(Context context, List<Category> categoryList) {
+    public MyCategoryAdapter(Context context, List<Category> categoryList, SelectedCategory selectedCategory){
         this.context = context;
         this.categoryList = categoryList;
+        this.categoryListOld = categoryList;
+        this.selectedCategory = selectedCategory;
     }
 
     @Override
@@ -77,6 +84,36 @@ public class MyCategoryAdapter extends RecyclerView.Adapter<MyCategoryAdapter.My
         return categoryList.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String strSearch = charSequence.toString();
+                if (strSearch.isEmpty()) {
+                    categoryList = categoryListOld;
+                } else {
+                    List<Category> list = new ArrayList<>();
+                    for (Category category : categoryListOld) {
+                        if (category.getName().toLowerCase().contains(strSearch.toLowerCase())) {
+                            list.add(category);
+                        }
+                    }
+                    categoryList = list;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = categoryList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                categoryList = (List<Category>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.img_category)
         ImageView img_category;
@@ -102,7 +139,13 @@ public class MyCategoryAdapter extends RecyclerView.Adapter<MyCategoryAdapter.My
         @Override
         public void onClick(View v) {
             listener.onCLick(v, getAdapterPosition());
+            selectedCategory.selectedCategory(categoryList.get(getAdapterPosition()));
         }
+
+    }
+
+    public interface SelectedCategory {
+        void selectedCategory(Category categoryModel);
 
     }
 }
