@@ -17,6 +17,9 @@ public class Restaurant {
         Lng = lng;
     }
 
+    public Restaurant() {
+    }
+
     public int getId() {
         return Id;
     }

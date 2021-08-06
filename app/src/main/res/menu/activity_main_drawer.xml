@@ -23,6 +23,12 @@
     </group>
     <group>
         <item
+            android:id="@+id/nav_fav"
+            android:icon="@drawable/ic_baseline_favorite_24"
+            android:title="@string/menu_fav" />
+    </group>
+    <group>
+        <item
             android:id="@+id/nav_order_history"
             android:icon="@drawable/ic_baseline_history_gray_24"
             android:title="@string/order_history" />

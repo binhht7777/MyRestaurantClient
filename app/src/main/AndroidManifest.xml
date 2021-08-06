@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyRestaurant">
-        <activity android:name=".FoodDetailActivity"></activity>
+        <activity android:name=".FavoriteActivity"></activity>
+        <activity android:name=".FoodDetailActivity" />
         <activity android:name=".FoodListActivity" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".UpdateInfoActivity" />

@@ -52,6 +52,13 @@
                 android:src="@drawable/ic_baseline_info_24"/>
 
             <ImageView
+                android:id="@+id/img_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_baseline_favorite_border_24"/>
+
+            <ImageView
                 android:id="@+id/img_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

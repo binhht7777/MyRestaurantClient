@@ -89,8 +89,6 @@ public class FoodListActivity extends AppCompatActivity {
         rcvFoodList = findViewById(R.id.recycler_food_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcvFoodList.setLayoutManager(linearLayoutManager);
-
-
     }
 
     private void init() {
@@ -183,8 +181,8 @@ public class FoodListActivity extends AppCompatActivity {
 
     public void selectedFood(Food foodModel) {
         // BinhPT06 - Get  categoryId and send to new activity
-        Intent foodDetail = new Intent(FoodListActivity.this, FoodDetailActivity.class);
-        foodDetail.putExtra("FoodId", foodModel.getId());
-        startActivity(foodDetail);
+//        Intent foodDetail = new Intent(FoodListActivity.this, FoodDetailActivity.class);
+//        foodDetail.putExtra("FoodId", foodModel.getId());
+//        startActivity(foodDetail);
     }
 }

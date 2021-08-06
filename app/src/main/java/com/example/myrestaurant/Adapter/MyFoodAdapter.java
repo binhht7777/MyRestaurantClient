@@ -20,10 +20,14 @@ import com.example.myrestaurant.Database.CartDatabase;
 import com.example.myrestaurant.Database.CartItem;
 import com.example.myrestaurant.Database.LocalCartDataSource;
 import com.example.myrestaurant.EventBus.FoodDetailEvent;
+import com.example.myrestaurant.FavoriteActivity;
 import com.example.myrestaurant.FoodDetailActivity;
 import com.example.myrestaurant.Interface.IFoodDetailOrCartClickListener;
+import com.example.myrestaurant.Model.FavoriteOnlyId;
 import com.example.myrestaurant.Model.Food;
 import com.example.myrestaurant.R;
+import com.example.myrestaurant.Retrofit.IMyRestaurantAPI;
+import com.example.myrestaurant.Retrofit.RetrofitClient;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,6 +52,7 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
 
     CompositeDisposable completDisposable;
     CartDataSource cartDataSource;
+    IMyRestaurantAPI myRestaurantAPI;
 
 
     public void onStop() {
@@ -62,6 +67,7 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
         this.selectedFood = selectedFood;
         completDisposable = new CompositeDisposable();
         cartDataSource = new LocalCartDataSource(CartDatabase.getInstance(context).cartDAO());
+        myRestaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT).create(IMyRestaurantAPI.class);
     }
 
     @NonNull
@@ -80,6 +86,68 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
         holder.txt_food_name.setText(foodList.get(position).getName());
         holder.txt_food_price.setText(new StringBuilder(context.getString(R.string.money_sign)).append(foodList.get(position).getPrice()));
         holder.txt_food_name.setText(foodList.get(position).getName());
+
+        //check favorite
+        if (Common.currentFavoriteRestaurant != null && Common.currentFavoriteRestaurant.size() > 0) {
+            if (Common.checkFavorite(foodList.get(position).getId())) {
+                holder.img_fav.setImageResource(R.drawable.ic_baseline_favorite_24);
+                holder.img_fav.setTag(true);
+            } else {
+                holder.img_fav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                holder.img_fav.setTag(false);
+            }
+        } else {
+            holder.img_fav.setTag(false);
+        }
+        holder.img_fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView fav = (ImageView) v;
+                if ((Boolean) fav.getTag()) {
+                    completDisposable.add(myRestaurantAPI.removeFavorite(Common.API_KEY,
+                            Common.currentUser.getFbid(),
+                            foodList.get(position).getId(),
+                            Common.currentRestaurant.getId())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(favoriteModel -> {
+                                        if (favoriteModel.isSuccess() && favoriteModel.getMessage().contains("Success")) {
+                                            fav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                                            fav.setTag(false);
+                                            if (Common.currentFavoriteRestaurant != null) {
+                                                Common.removeFavorite(foodList.get(position).getId());
+                                            }
+                                        }
+                                    },
+                                    throwable -> {
+//                                        Toast.makeText(context, "[REMOVE FAV]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }));
+                } else {
+                    completDisposable.add(myRestaurantAPI.insertFavorite(Common.API_KEY,
+                            Common.currentUser.getFbid(),
+                            foodList.get(position).getId(),
+                            Common.currentRestaurant.getId(),
+                            Common.currentRestaurant.getName(),
+                            foodList.get(position).getName(),
+                            foodList.get(position).getImage(),
+                            foodList.get(position).getPrice())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(favoriteModel -> {
+                                        if (favoriteModel.isSuccess() && favoriteModel.getMessage().contains("Success")) {
+                                            fav.setImageResource(R.drawable.ic_baseline_favorite_24);
+                                            fav.setTag(true);
+                                            if (Common.currentFavoriteRestaurant != null) {
+                                                Common.currentFavoriteRestaurant.add(new FavoriteOnlyId(foodList.get(position).getId()));
+                                            }
+                                        }
+                                    },
+                                    throwable -> {
+                                        Toast.makeText(context, "[ADD FAV]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }));
+                }
+            }
+        });
         holder.setListener((view, position1, isDetail) -> {
             if (isDetail) {
                 context.startActivity(new Intent(context, FoodDetailActivity.class));
@@ -146,7 +214,7 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
         };
     }
 
-    public interface SelectedFood{
+    public interface SelectedFood {
         void selectedFood(Food foodModel);
 
     }
@@ -166,6 +234,9 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
 
         @BindView(R.id.img_card)
         ImageView img_card;
+
+        @BindView(R.id.img_fav)
+        ImageView img_fav;
 
         IFoodDetailOrCartClickListener listener;
 

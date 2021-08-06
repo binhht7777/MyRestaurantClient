@@ -118,6 +118,8 @@ public class HomeActivity extends AppCompatActivity {
 
                 } else if (id == (R.id.nav_update_info)) {
 
+                }else if(id == R.id.nav_fav){
+                    startActivity(new Intent(HomeActivity.this, FavoriteActivity.class));
                 }
                 return true;
             }

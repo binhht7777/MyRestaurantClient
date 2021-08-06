@@ -29,6 +29,7 @@ import com.example.myrestaurant.Database.CartDatabase;
 import com.example.myrestaurant.Database.LocalCartDataSource;
 import com.example.myrestaurant.EventBus.MenuItemEvent;
 import com.example.myrestaurant.Model.Category;
+import com.example.myrestaurant.Model.FavoriteModel;
 import com.example.myrestaurant.Retrofit.IMyRestaurantAPI;
 import com.example.myrestaurant.Retrofit.RetrofitClient;
 import com.example.myrestaurant.Utils.SpacesItemDecoration;
@@ -42,6 +43,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.concurrent.CountedCompleter;
 
 import butterknife.BindView;
@@ -102,6 +104,30 @@ public class MenuActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         countCartByRestaurant();
+        loadFavoriteByRestaurant();
+    }
+
+    private void loadFavoriteByRestaurant() {
+        compositeDisposable.add(myRestaurantAPI.getFavoriteByRestaurant(Common.API_KEY,
+                Common.currentUser.getFbid(),
+                Common.currentRestaurant.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(favoriteOnlyIdModel -> {
+                            if (favoriteOnlyIdModel.isSuccess()) {
+                                if (favoriteOnlyIdModel.getResult() != null && favoriteOnlyIdModel.getResult().size() > 0) {
+                                    Common.currentFavoriteRestaurant = favoriteOnlyIdModel.getResult();
+                                } else {
+                                    Common.currentFavoriteRestaurant = new ArrayList<>();
+                                }
+
+                            } else {
+//                                Toast.makeText(this, "[GET FAVORITE]" + favoriteOnlyIdModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        , throwable -> {
+                            Toast.makeText(this, "[GET FAVORITE]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }));
     }
 
     private void countCartByRestaurant() {
@@ -258,8 +284,8 @@ public class MenuActivity extends AppCompatActivity {
 
     public void selectedCategory(Category categoryModel) {
         // BinhPT06 - Get  categoryId and send to new activity
-        Intent categoryDetail = new Intent(MenuActivity.this, FoodListActivity.class);
-        categoryDetail.putExtra("FoodId", categoryModel.getId());
-        startActivity(categoryDetail);
+//        Intent categoryDetail = new Intent(MenuActivity.this, FoodListActivity.class);
+//        categoryDetail.putExtra("FoodId", categoryModel.getId());
+//        startActivity(categoryDetail);
     }
 }
